@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 // }));
 const allowedOrigins = [
   "https://order-management-f-lmynkvow5-riya-patels-projects-c855bf2c.vercel.app",
-  "https://order-management-f-e.vercel.app/",
+  "https://order-management-f-e.vercel.app",
   "http://localhost:3000",
 ];
 
