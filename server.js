@@ -54,7 +54,7 @@ const corsOptions = {
 
 app.use(allowCredentials);
 app.use(cors(corsOptions));
-app.options("/*", cors(corsOptions));
+// app.options("/", cors(corsOptions));
 
 // DB connection
 connection()
