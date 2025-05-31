@@ -26,11 +26,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// CORS
-// app.use(cors({
-//   origin: 'http://localhost:3000',
-//   credentials: true,  // if you use cookies or auth headers
-// }));
 const allowedOrigins = [
   "https://order-management-f-lmynkvow5-riya-patels-projects-c855bf2c.vercel.app",
   "https://order-management-f-e.vercel.app",
@@ -39,10 +34,10 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: function(origin, callback) {
-    console.log("In cors option Origin:", origin);  // debug log to check incoming origin
-    if (!origin) return callback(null, true); // allow REST clients like Postman without origin
+    console.log("In cors option Origin:", origin);  
+    if (!origin) return callback(null, true); 
     if (allowedOrigins.includes(origin)) {
-      callback(null, origin);  // send back origin to allow it
+      callback(null, origin);  
     } else {
       callback(new Error("Not allowed by CORS"));
     }
@@ -52,9 +47,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// app.options("/", cors(corsOptions));
-
-// app.use(cors())
 
 // DB connection
 connection()
@@ -64,9 +56,6 @@ app.listen(process.env.PORT, () => {
 
 // Auth Route
 app.use("/api/auth", authRoute)
-
-// //Authenticate
-// app.use(authenticateUser);
 
 // Routes
 app.use("/api/area", areaRoute)

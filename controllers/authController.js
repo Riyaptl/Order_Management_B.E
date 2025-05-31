@@ -17,7 +17,9 @@ const generateToken = (user) => {
 const loginAuth = async (req, res) => {
     const {username, password} = req.body   
     try {
-        const user = await User.login(username, password)
+        const usernameTrimmed = username.trim()
+        const passwordTrimmed = password.trim()
+        const user = await User.login({username: usernameTrimmed, password: passwordTrimmed})
         const token = generateToken(user)
         res.status(200).json({'token':token, "message": "Login successful", "user": user.username, "role": user.role})
     } catch (error) {
@@ -27,31 +29,37 @@ const loginAuth = async (req, res) => {
 
 const sendOTP = async (req, res) => {
   const { username, email, password, confirmPassword, role } = req.body;
+  const usernameTrimmed = username.trim()
+  const passwordTrimmed = password.trim()
+  const confirmPasswordTrimmed = confirmPassword.trim()
+  const roleTrimmed = role.trim()
+  const emailTrimmed = email.trim()
 
-  if (password !== confirmPassword)
+  if (passwordTrimmed !== confirmPasswordTrimmed)
     return res.status(400).json("Passwords do not match");
 
   try {
-    const existingUser = await User.findOne({ email });
+
+    const existingUser = await User.findOne({ email: emailTrimmed });
     if (existingUser) return res.status(400).json("User already exists");
 
-    const existingUsername = await User.findOne({ username });
+    const existingUsername = await User.findOne({ username: usernameTrimmed });
     if (existingUsername) return res.status(400).json("Username already exists");
 
-    const existingPending = await PendingUser.findOne({ email });
-    if (existingPending) await PendingUser.deleteOne({ email });
+    const existingPending = await PendingUser.findOne({ email: emailTrimmed });
+    if (existingPending) await PendingUser.deleteOne({ email: emailTrimmed });
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     console.log(otp);
     
     const salt = await bcrypt.genSalt(10);
     const hashedOTP = await bcrypt.hash(otp, salt);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(passwordTrimmed, salt);
 
     const pending = new PendingUser({
-      username,
-      email,
-      role,
+      username: usernameTrimmed,
+      email: emailTrimmed,
+      role: roleTrimmed,
       passwordHash: hashedPassword,
       otpHash: hashedOTP,
       otpGeneratedAt: new Date(),

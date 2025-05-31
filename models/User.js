@@ -31,7 +31,7 @@ const UserSchema = new Schema({
     }
 }, {timestamps: true});
 
-UserSchema.statics.login = async function(username, password){
+UserSchema.statics.login = async function({username, password}){
     if (!username || !password){
         throw Error("All fileds must be filled")
     }
