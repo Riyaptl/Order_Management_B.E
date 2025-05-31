@@ -25,14 +25,36 @@ app.use(express.json())
 //   origin: 'http://localhost:3000',
 //   credentials: true,  // if you use cookies or auth headers
 // }));
+
 const allowedOrigins = [
-  "https://order-management-f-e-mk4n-ptmev3v3f.vercel.app"
+  "https://order-management-f-e-mk4n-ptmev3v3f.vercel.app",
+  "http://localhost:3000",
 ];
 
-app.use(cors({
-  origin: allowedOrigins,
+const allowCredentials = (req, res, next) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Credentials', 'true');
+  }
+  next();
+};
+
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
-}));
+  optionsSuccessStatus: 200,
+};
+
+app.use(allowCredentials);
+app.use(cors(corsOptions));
+app.options("/*", cors(corsOptions));
 
 // DB connection
 connection()
