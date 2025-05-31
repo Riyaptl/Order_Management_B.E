@@ -19,6 +19,9 @@ const app = express()
 app.use(express.json())
 
 app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    console.log('OPTIONS headers:', req.headers);
+  }
   console.log(`[${req.method}] ${req.url} Origin: ${req.headers.origin}`);
   next();
 });
@@ -28,25 +31,17 @@ app.use((req, res, next) => {
 //   origin: 'http://localhost:3000',
 //   credentials: true,  // if you use cookies or auth headers
 // }));
-
 const allowedOrigins = [
   "https://order-management-f-e-mk4n-ptmev3v3f.vercel.app",
   "http://localhost:3000",
 ];
 
-const allowCredentials = (req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Credentials', 'true');
-  }
-  next();
-};
-
 const corsOptions = {
   origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
+    console.log("Origin:", origin);  // debug log to check incoming origin
+    if (!origin) return callback(null, true); // allow REST clients like Postman without origin
     if (allowedOrigins.includes(origin)) {
-      callback(null, origin);
+      callback(null, origin);  // send back origin to allow it
     } else {
       callback(new Error("Not allowed by CORS"));
     }
@@ -55,7 +50,6 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-app.use(allowCredentials);
 app.use(cors(corsOptions));
 // app.options("/", cors(corsOptions));
 
