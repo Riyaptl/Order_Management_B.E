@@ -32,8 +32,8 @@ app.use((req, res, next) => {
 //   credentials: true,  // if you use cookies or auth headers
 // }));
 const allowedOrigins = [
-  "https://order-management-f-e-mk4n-ptmev3v3f.vercel.app",
-  "https://order-management-f-e-mk4n.vercel.app",
+  "https://order-management-f-lmynkvow5-riya-patels-projects-c855bf2c.vercel.app",
+  "https://order-management-f-e.vercel.app/",
   "http://localhost:3000",
 ];
 
