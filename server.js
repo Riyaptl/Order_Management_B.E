@@ -26,15 +26,13 @@ app.use(express.json())
 //   credentials: true,  // if you use cookies or auth headers
 // }));
 const allowedOrigins = [
-  "https://order-management-f-e-mk4n-ptmev3v3f.vercel.app",
+  "https://order-management-f-e-mk4n-ptmev3v3f.vercel.app"
 ];
 
 app.use(cors({
   origin: allowedOrigins,
-  credentials: true, // If you're using cookies or Authorization headers
+  credentials: true,
 }));
-
-app.options("*", cors());
 
 // DB connection
 connection()
