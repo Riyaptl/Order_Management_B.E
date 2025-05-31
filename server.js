@@ -22,7 +22,7 @@ app.use((req, res, next) => {
   if (req.method === 'OPTIONS') {
     console.log('OPTIONS headers:', req.headers);
   }
-  console.log(`[${req.method}] ${req.url} Origin: ${req.headers.origin}`);
+  console.log(`Debugging: [${req.method}] ${req.url} Origin: ${req.headers.origin}`);
   next();
 });
 
@@ -33,12 +33,13 @@ app.use((req, res, next) => {
 // }));
 const allowedOrigins = [
   "https://order-management-f-e-mk4n-ptmev3v3f.vercel.app",
+  "https://order-management-f-e-mk4n.vercel.app",
   "http://localhost:3000",
 ];
 
 const corsOptions = {
   origin: function(origin, callback) {
-    console.log("Origin:", origin);  // debug log to check incoming origin
+    console.log("In cors option Origin:", origin);  // debug log to check incoming origin
     if (!origin) return callback(null, true); // allow REST clients like Postman without origin
     if (allowedOrigins.includes(origin)) {
       callback(null, origin);  // send back origin to allow it
