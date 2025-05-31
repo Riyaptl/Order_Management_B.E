@@ -18,11 +18,14 @@ dotenv.config()
 const app = express()
 app.use(express.json())
 
+// https://order-management-f-e-mk4n-ptmev3v3f.vercel.app/
+
 // CORS
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true,  // if you use cookies or auth headers
-}));
+// app.use(cors({
+//   origin: 'http://localhost:3000',
+//   credentials: true,  // if you use cookies or auth headers
+// }));
+app.options("*", cors());
 
 // DB connection
 connection()
